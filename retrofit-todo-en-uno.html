@@ -22,7 +22,12 @@
     {"@type":"Question","name":"¿Qué es un retrofit de HVAC?","acceptedAnswer":{"@type":"Answer","text":"Un retrofit moderniza su sistema de aire existente sin reemplazar toda la unidad. Se sustituye el ventilador de polea y banda original por un muro de ventiladores EC, mejorando eficiencia, fiabilidad y control a una fracción del costo de un equipo nuevo."}},
     {"@type":"Question","name":"¿Cuánto puede ahorrar con un muro de ventiladores EC?","acceptedAnswer":{"@type":"Answer","text":"El ahorro típico es de 50–60% en el consumo de ventilación. Proyectos en México han registrado reducciones entre 47% y 61% dependiendo del sistema y perfil de operación."}},
     {"@type":"Question","name":"¿Cuánto tarda la instalación?","acceptedAnswer":{"@type":"Answer","text":"La instalación es Plug & Play y toma horas, no semanas. Los ventiladores compactos pasan por puertas y ascensores sin necesidad de grúas ni demoliciones, con interrupción mínima a la operación."}},
-    {"@type":"Question","name":"¿Qué pasa si un ventilador EC falla?","acceptedAnswer":{"@type":"Answer","text":"El sistema tiene redundancia N+1. Si un ventilador falla, los demás aumentan su velocidad automáticamente para mantener el flujo de aire. Cero tiempo de inactividad durante mantenimiento o reparaciones."}}
+    {"@type":"Question","name":"¿Qué pasa si un ventilador EC falla?","acceptedAnswer":{"@type":"Answer","text":"El sistema tiene redundancia N+1. Si un ventilador falla, los demás aumentan su velocidad automáticamente para mantener el flujo de aire. Cero tiempo de inactividad durante mantenimiento o reparaciones."}},
+    {"@type":"Question","name":"¿Qué es un motor EC?","acceptedAnswer":{"@type":"Answer","text":"Un motor EC (Electronically Commutated) es un motor de corriente continua sin escobillas con electrónica de control integrada. Opera con eficiencia de 90–95% frente al 55–70% de un motor AC convencional, y tiene el variador de frecuencia integrado para control preciso de velocidad sin componentes mecánicos adicionales."}},
+    {"@type":"Question","name":"¿Qué significa IE5 en motores eléctricos?","acceptedAnswer":{"@type":"Answer","text":"IE5 es la máxima categoría de eficiencia energética según la norma IEC 60034-30-1, denominada Ultra-Premium. Los motores EC alcanzan IE5 de forma nativa gracias a su tecnología de imanes permanentes, con pérdidas de energía hasta 40% menores que un motor IE3 estándar."}},
+    {"@type":"Question","name":"¿Qué es un muro de ventiladores EC?","acceptedAnswer":{"@type":"Answer","text":"Un muro de ventiladores EC es un arreglo de múltiples ventiladores EC compactos montados en paralelo sobre un tabique dentro de la unidad manejadora de aire. Reemplaza al ventilador centrífugo único de banda y polea con mayor eficiencia, redundancia N+1 y control de caudal preciso por protocolo 0–10 V, BACnet o Modbus."}},
+    {"@type":"Question","name":"¿Cuánto consume un ventilador HVAC típico?","acceptedAnswer":{"@type":"Answer","text":"Un ventilador de 75 kW operando 16 horas al día, 350 días al año consume aproximadamente 420,000 kWh anuales. Con un muro de ventiladores EC eso se reduce a 189,000 kWh, generando un ahorro de más de 650,000 MXN por año en tarifas de media tensión."}},
+    {"@type":"Question","name":"¿Qué es BACnet en sistemas HVAC?","acceptedAnswer":{"@type":"Answer","text":"BACnet (Building Automation and Control Networks) es el protocolo estándar ASHRAE/ISO para la automatización de edificios. Los ventiladores EC se integran por BACnet MS/TP o BACnet IP directamente al BMS del edificio, permitiendo control centralizado, monitoreo en tiempo real y alarmas sin controladores adicionales."}}
   ]}
   </script>
 
@@ -1082,6 +1087,67 @@ body.cursor-hover .cursor-follower { border-color: var(--brand); }
   .beneficios-grid { grid-template-columns: 1fr; }
   .footer-links { grid-template-columns: 1fr; }
   .hero-title { font-size: 40px; }
+  .glosario-grid { grid-template-columns: 1fr; }
+}
+
+/* ─── GLOSARIO SEO ──────────────────────────────────────── */
+.glosario-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.glosario-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 28px;
+  transition: border-color 0.2s var(--ease-mech), transform 0.2s var(--ease-mech);
+}
+.glosario-card:hover {
+  border-color: var(--brand);
+  transform: translateY(-4px);
+}
+.glosario-icon {
+  width: 44px; height: 44px;
+  background: rgba(30,83,216,0.12);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--brand);
+  font-size: 18px;
+  margin-bottom: 18px;
+}
+.glosario-card h3 {
+  font-family: var(--font-display);
+  font-size: 17px; font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.glosario-card p {
+  font-size: 14px; line-height: 1.75;
+  color: var(--text-2);
+}
+
+@media (max-width: 1024px) {
+  .glosario-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ─── WHATSAPP BUTTON ───────────────────────────────────── */
+.whatsapp-btn {
+  position: fixed;
+  bottom: 88px;
+  right: 24px;
+  z-index: 999;
+  width: 56px; height: 56px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+  transition: transform 0.2s var(--ease-mech), box-shadow 0.2s var(--ease-mech);
+}
+.whatsapp-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(37,211,102,0.55);
 }
 
 </style>
@@ -1865,6 +1931,74 @@ body.cursor-hover .cursor-follower { border-color: var(--brand); }
   </div>
 </section>
 
+<!-- SEO GLOSARIO -->
+<section id="glosario" class="section section-dark">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label mono">GLOSARIO TÉCNICO</div>
+      <h2>Todo lo que necesita saber sobre <span class="gradient-text">ventilación EC</span></h2>
+      <p class="section-sub">Conceptos clave para entender por qué el muro de ventiladores EC es el estándar de eficiencia en HVAC moderno.</p>
+    </div>
+    <div class="glosario-grid">
+
+      <div class="glosario-card reveal" data-delay="0">
+        <div class="glosario-icon"><i class="fas fa-bolt"></i></div>
+        <h3>¿Qué es un motor EC?</h3>
+        <p>Un motor EC (Electronically Commutated) es un motor de corriente continua sin escobillas con electrónica de control integrada. A diferencia de los motores AC convencionales, el motor EC convierte la corriente alterna de la red en continua y la vuelve a convertir con frecuencia variable, lo que le permite operar a cualquier punto de la curva de eficiencia. Eficiencia típica: 90–95% frente al 55–70% de un motor AC con banda y polea.</p>
+      </div>
+
+      <div class="glosario-card reveal" data-delay="80">
+        <div class="glosario-icon"><i class="fas fa-certificate"></i></div>
+        <h3>¿Qué significa IE5 en motores?</h3>
+        <p>La norma IEC 60034-30-1 clasifica la eficiencia de los motores eléctricos en categorías IE1 (estándar) hasta IE5 (ultra-premium). Un motor IE5 representa el nivel más alto de eficiencia disponible: pérdidas de energía hasta 40% menores que un motor IE3. Los motores EC alcanzan IE5 de forma nativa gracias a su tecnología de imanes permanentes y control vectorial integrado.</p>
+      </div>
+
+      <div class="glosario-card reveal" data-delay="160">
+        <div class="glosario-icon"><i class="fas fa-th"></i></div>
+        <h3>¿Qué es un muro de ventiladores EC?</h3>
+        <p>Un muro de ventiladores EC (fan wall) es un arreglo de múltiples ventiladores EC compactos montados en paralelo sobre un tabique estructural dentro de la unidad manejadora de aire. Reemplaza al ventilador centrífugo único de banda y polea. Al dividir el flujo entre varios ventiladores de menor tamaño se obtiene mayor eficiencia aerodinámica, redundancia N+1 y modulación precisa del caudal mediante control 0–10 V o BACnet.</p>
+      </div>
+
+      <div class="glosario-card reveal" data-delay="0">
+        <div class="glosario-icon"><i class="fas fa-exchange-alt"></i></div>
+        <h3>Motor EC vs motor AC: diferencias clave</h3>
+        <p>El motor AC tradicional opera a velocidad fija determinada por la frecuencia de red (50/60 Hz). Para variar la velocidad requiere un variador de frecuencia externo (VFD), correas y poleas que generan pérdidas mecánicas. El motor EC tiene el VFD integrado, acoplamiento directo al impulsor y puede operar entre 15% y 100% de su velocidad nominal sin pérdida significativa de eficiencia, reduciendo el consumo en cargas parciales hasta un 60%.</p>
+      </div>
+
+      <div class="glosario-card reveal" data-delay="80">
+        <div class="glosario-icon"><i class="fas fa-shield-alt"></i></div>
+        <h3>¿Qué es la redundancia N+1 en HVAC?</h3>
+        <p>Redundancia N+1 significa que el sistema tiene un ventilador adicional más allá de los necesarios para cumplir el caudal de diseño. Si uno falla, los demás aumentan su velocidad automáticamente para mantener el flujo de aire sin interrupción del servicio. En instalaciones críticas como centros de datos, hospitales o salas limpias, esto elimina el tiempo de inactividad por mantenimiento correctivo.</p>
+      </div>
+
+      <div class="glosario-card reveal" data-delay="160">
+        <div class="glosario-icon"><i class="fas fa-wind"></i></div>
+        <h3>¿Qué es el impelente ZAflow?</h3>
+        <p>ZAflow es un impulsor centrífugo de diseño biomimético inspirado en la estructura hexagonal del panal de abeja. Su geometría optimizada reduce la turbulencia interna, disminuye el nivel de ruido y mejora la eficiencia aerodinámica hasta un 8% sobre impulsores convencionales. Se fabrica en plástico reforzado de alta resistencia y está disponible en diámetros de 250 a 800 mm para distintos rangos de caudal.</p>
+      </div>
+
+      <div class="glosario-card reveal" data-delay="0">
+        <div class="glosario-icon"><i class="fas fa-tools"></i></div>
+        <h3>¿Qué es un retrofit de HVAC?</h3>
+        <p>El término retrofit en HVAC se refiere a la modernización de un sistema existente mediante la sustitución de componentes obsoletos por tecnología más eficiente, sin demoler ni reemplazar toda la unidad. Un retrofit de ventilación EC sustituye únicamente el conjunto de ventilación (motor, correas, poleas, rodamientos y cabezal) por un muro de ventiladores EC, conservando el gabinete, serpentines y sistema de control existente.</p>
+      </div>
+
+      <div class="glosario-card reveal" data-delay="80">
+        <div class="glosario-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>¿Cuánto consume un ventilador HVAC?</h3>
+        <p>En un edificio comercial o industrial típico, el sistema de ventilación HVAC representa entre el 25% y el 40% del consumo eléctrico total. Dentro de la unidad manejadora, el ventilador es el mayor consumidor. Un motor de 75 kW operando 16 horas al día, 350 días al año consume aproximadamente 420,000 kWh anuales. Con un muro de ventiladores EC eso se reduce a 189,000 kWh: un ahorro de 231,000 kWh y más de 650,000 MXN por año.</p>
+      </div>
+
+      <div class="glosario-card reveal" data-delay="160">
+        <div class="glosario-icon"><i class="fas fa-network-wired"></i></div>
+        <h3>Control BACnet y Modbus en ventiladores EC</h3>
+        <p>Los ventiladores EC modernos se integran directamente con los sistemas de automatización de edificios (BAS/BMS) mediante protocolos estándar como BACnet MS/TP, BACnet IP o Modbus RTU. Esto permite control centralizado de velocidad, lectura de variables (RPM, corriente, temperatura del motor, vibración) y alarmas en tiempo real desde el SCADA del edificio, sin necesidad de controladores intermedios ni cableado adicional complejo.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- CTA BAND -->
 <section class="cta-band">
   <div class="container">
@@ -2065,6 +2199,11 @@ body.cursor-hover .cursor-follower { border-color: var(--brand); }
     </div>
   </div>
 </footer>
+
+<!-- WHATSAPP BUTTON -->
+<a class="whatsapp-btn" href="https://wa.me/528115681486" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
 
 <!-- BACK TO TOP -->
 <button class="back-to-top" id="backToTop" aria-label="Volver arriba">
