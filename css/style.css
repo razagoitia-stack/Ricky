@@ -126,6 +126,7 @@ body.cursor-hover .cursor-follower { border-color: var(--brand); }
   font-family: var(--font-display);
   font-size: 18px; font-weight: 800;
   letter-spacing: 0.1em;
+  color: #ffffff;
 }
 .logo-mx { color: var(--brand); }
 .nav-links {
