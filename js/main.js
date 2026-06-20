@@ -2,39 +2,11 @@
    RETROFIT.MX — Interactive JavaScript 2026
    ============================================================ */
 
-/* ─── LOADER ─────────────────────────────────────────────── */
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loader').classList.add('hidden');
-    startHeroAnimations();
-  }, 1800);
-});
-
-/* ─── CUSTOM CURSOR ─────────────────────────────────────── */
-const cursor = document.getElementById('cursor');
-const cursorFollower = document.getElementById('cursorFollower');
-let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
-
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX; mouseY = e.clientY;
-  cursor.style.left = mouseX + 'px';
-  cursor.style.top = mouseY + 'px';
-});
-
-(function animateFollower() {
-  followerX += (mouseX - followerX) * 0.12;
-  followerY += (mouseY - followerY) * 0.12;
-  cursorFollower.style.left = followerX + 'px';
-  cursorFollower.style.top = followerY + 'px';
-  requestAnimationFrame(animateFollower);
-})();
-
-document.querySelectorAll('a, button, .fwb-card, .tech-card, .ben-card, .project-card, .filter-btn, .faq-q, input, select, textarea').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-});
-
 /* ─── HERO ANIMATIONS ───────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(startHeroAnimations, 300);
+});
+
 function startHeroAnimations() {
   document.querySelectorAll('.animate-in').forEach((el, i) => {
     setTimeout(() => el.classList.add('in'), i * 200);
@@ -184,14 +156,8 @@ const counterObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.stat-num').forEach(el => counterObserver.observe(el));
 
 /* ─── CALCULATOR (EC-VENT SAVINGS) ──────────────────────── */
-/*
- * Model from brand guidelines:
- * Typical saving = 55% of HVAC fan energy consumption.
- * kWh_saved = potencia_kw × horas × dias × 0.55
- * Result: annual savings in MXN, kWh saved, CO2 avoided.
- */
 const SAVING_PCT = 0.55;
-const CO2_KG_PER_KWH = 0.454; // Mexico grid factor
+const CO2_KG_PER_KWH = 0.454;
 
 const calcRanges = [
   { id: 'potenciaKw', fmt: v => Math.round(v) },
@@ -302,16 +268,6 @@ document.getElementById('modalClose').addEventListener('click', closeModal);
 modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-/* ─── FAQ ACCORDION ─────────────────────────────────────── */
-document.querySelectorAll('.faq-q').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const item = btn.closest('.faq-item');
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  });
-});
-
 /* ─── CONTACT FORM ───────────────────────────────────────── */
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
@@ -359,7 +315,6 @@ document.querySelectorAll('.tech-card, .project-card').forEach(card => {
   });
   card.addEventListener('mouseleave', () => { card.style.transform = ''; });
 });
-
 
 /* ─── HERO STATS COUNTER ────────────────────────────────── */
 const heroStatObserver = new IntersectionObserver((entries) => {

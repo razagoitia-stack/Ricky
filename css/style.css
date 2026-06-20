@@ -1244,6 +1244,29 @@ body.cursor-hover .cursor-follower { border-color: var(--brand); }
   .sistema-features { grid-template-columns: 1fr; }
 }
 
+/* ─── EL PROBLEMA ───────────────────────────────────────── */
+.problem-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin: 48px 0 40px;
+}
+.prob-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 28px;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+.prob-card:hover { border-color: rgba(255,90,31,0.4); box-shadow: 0 0 20px rgba(255,90,31,0.08); transform: translateY(-3px); }
+.prob-icon {
+  width: 44px; height: 44px; background: rgba(255,90,31,0.1);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px; color: var(--pop); font-size: 18px;
+}
+.prob-card h3 { font-family: var(--font-display); font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+.prob-card p { font-size: 14px; color: var(--text-2); line-height: 1.65; }
+.prob-cta { text-align: center; padding: 40px 0 8px; }
+.prob-cta p { font-size: 12px; color: var(--text-3); margin-bottom: 24px; letter-spacing: 0.08em; }
+@media (max-width: 1024px) { .problem-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .problem-grid { grid-template-columns: 1fr; } }
+
 /* ─── CAROUSEL ───────────────────────────────────────────── */
 .carousel-outer {
   position: relative;
