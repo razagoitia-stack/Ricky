@@ -2428,39 +2428,6 @@ document.querySelectorAll('.tech-card, .project-card').forEach(card => {
   card.addEventListener('mouseleave', () => { card.style.transform = ''; });
 });
 
-/* ─── TYPEWRITER HERO ───────────────────────────────────── */
-const line2 = document.querySelector('.hero-title .line-2');
-if (line2) {
-  const texts = [
-    'en Movimiento',
-    'sin Demolición',
-    'Plug & Play',
-    'con Redundancia N+1',
-    'desde el Día Uno',
-  ];
-  let textIdx = 0, charIdx = 0, isDeleting = false;
-  line2.textContent = texts[0];
-
-  function typeWriter() {
-    const full = texts[textIdx];
-    if (isDeleting) {
-      line2.textContent = full.substring(0, charIdx - 1);
-      charIdx--;
-    } else {
-      line2.textContent = full.substring(0, charIdx + 1);
-      charIdx++;
-    }
-    let delay = isDeleting ? 45 : 85;
-    if (!isDeleting && charIdx === full.length) { delay = 2800; isDeleting = true; }
-    if (isDeleting && charIdx === 0) {
-      isDeleting = false;
-      textIdx = (textIdx + 1) % texts.length;
-      delay = 300;
-    }
-    setTimeout(typeWriter, delay);
-  }
-  setTimeout(typeWriter, 3500);
-}
 
 /* ─── HERO STATS COUNTER ────────────────────────────────── */
 const heroStatObserver = new IntersectionObserver((entries) => {
