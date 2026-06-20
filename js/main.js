@@ -266,36 +266,41 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
-/* ─── TESTIMONIALS SLIDER ───────────────────────────────── */
-const track = document.getElementById('testimonialTrack');
-const dotsContainer = document.getElementById('sliderDots');
-let current = 0;
-const cards = track ? track.querySelectorAll('.testimonial-card') : [];
-const total = cards.length;
-
-if (total > 0) {
-  cards.forEach((_, i) => {
-    const dot = document.createElement('div');
-    dot.className = 'dot' + (i === 0 ? ' active' : '');
-    dot.addEventListener('click', () => goTo(i));
-    dotsContainer.appendChild(dot);
+/* ─── CAROUSEL ARROWS ───────────────────────────────────── */
+document.querySelectorAll('.carousel-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const carousel = document.getElementById(btn.dataset.target);
+    if (!carousel) return;
+    const cardW = (carousel.querySelector('.cc')?.offsetWidth || 300) + 20;
+    const dir = btn.classList.contains('carousel-prev') ? -1 : 1;
+    carousel.scrollBy({ left: dir * cardW, behavior: 'smooth' });
   });
+});
 
-  document.getElementById('prevBtn').addEventListener('click', () => goTo((current - 1 + total) % total));
-  document.getElementById('nextBtn').addEventListener('click', () => goTo((current + 1) % total));
+/* ─── MODAL ─────────────────────────────────────────────── */
+const modalOverlay = document.getElementById('modalOverlay');
+const modalBody    = document.getElementById('modalBody');
 
-  let autoSlide = setInterval(() => goTo((current + 1) % total), 5000);
-  track.addEventListener('mouseenter', () => clearInterval(autoSlide));
-  track.addEventListener('mouseleave', () => {
-    autoSlide = setInterval(() => goTo((current + 1) % total), 5000);
+document.querySelectorAll('.cc').forEach(card => {
+  card.addEventListener('click', () => {
+    const tmpl = document.getElementById(card.dataset.modalId);
+    if (!tmpl) return;
+    const imgEl = card.querySelector('.cc-img');
+    let imgHtml = '';
+    if (imgEl) imgHtml = `<img src="${imgEl.src}" class="modal-img" alt="${imgEl.alt}">`;
+    modalBody.innerHTML = imgHtml + tmpl.innerHTML;
+    modalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
   });
-}
+});
 
-function goTo(idx) {
-  current = idx;
-  track.style.transform = `translateX(-${current * 100}%)`;
-  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+function closeModal() {
+  modalOverlay.classList.remove('active');
+  document.body.style.overflow = '';
 }
+document.getElementById('modalClose').addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 /* ─── FAQ ACCORDION ─────────────────────────────────────── */
 document.querySelectorAll('.faq-q').forEach(btn => {
