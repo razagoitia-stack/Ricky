@@ -121,7 +121,7 @@ body.cursor-hover .cursor-follower { border-color: var(--brand); }
 .nav-logo {
   display: flex; align-items: center; gap: 10px;
 }
-.logo-svg { width: 32px; height: 32px; }
+.logo-svg { width: 32px; height: 32px; color: var(--brand); }
 .logo-text {
   font-family: var(--font-display);
   font-size: 18px; font-weight: 800;
