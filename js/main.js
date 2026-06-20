@@ -1,5 +1,5 @@
 /* ============================================================
-   RETROFIT.MX — Interactive JavaScript
+   RETROFIT.MX — Interactive JavaScript 2026
    ============================================================ */
 
 /* ─── LOADER ─────────────────────────────────────────────── */
@@ -29,7 +29,7 @@ document.addEventListener('mousemove', e => {
   requestAnimationFrame(animateFollower);
 })();
 
-document.querySelectorAll('a, button, .service-card, .filter-btn, .faq-q, input, select, textarea').forEach(el => {
+document.querySelectorAll('a, button, .fwb-card, .tech-card, .ben-card, .project-card, .filter-btn, .faq-q, input, select, textarea').forEach(el => {
   el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
   el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
 });
@@ -39,8 +39,6 @@ function startHeroAnimations() {
   document.querySelectorAll('.animate-in').forEach((el, i) => {
     setTimeout(() => el.classList.add('in'), i * 200);
   });
-  buildWindows();
-  animateWindows();
 }
 
 /* ─── NAVBAR ─────────────────────────────────────────────── */
@@ -105,7 +103,7 @@ class Particle {
     this.vy = (Math.random() - 0.5) * 0.5;
     this.r = Math.random() * 1.5 + 0.5;
     this.alpha = Math.random() * 0.5 + 0.1;
-    this.color = Math.random() > 0.5 ? '0,245,160' : '0,217,245';
+    this.color = Math.random() > 0.5 ? '30,83,216' : '0,200,240';
   }
   update() {
     this.x += this.vx; this.y += this.vy;
@@ -131,7 +129,7 @@ function drawConnections() {
         ctx.beginPath();
         ctx.moveTo(particles[i].x, particles[i].y);
         ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(0,245,160,${0.06 * (1 - dist/100)})`;
+        ctx.strokeStyle = `rgba(30,83,216,${0.06 * (1 - dist/100)})`;
         ctx.lineWidth = 0.5;
         ctx.stroke();
       }
@@ -146,37 +144,6 @@ function animateParticles() {
   requestAnimationFrame(animateParticles);
 }
 animateParticles();
-
-/* ─── BUILDING WINDOWS ──────────────────────────────────── */
-function buildWindows() {
-  const container = document.querySelector('.building-windows');
-  if (!container) return;
-  container.innerHTML = '';
-  for (let i = 0; i < 48; i++) {
-    const w = document.createElement('div');
-    w.className = 'win';
-    container.appendChild(w);
-  }
-}
-
-function animateWindows() {
-  const windows = document.querySelectorAll('.win');
-  if (!windows.length) return;
-  setInterval(() => {
-    const idx = Math.floor(Math.random() * windows.length);
-    const w = windows[idx];
-    if (Math.random() > 0.5) {
-      w.classList.remove('lit', 'lit-yellow');
-      if (Math.random() > 0.7) {
-        w.classList.add('lit-yellow');
-      } else {
-        w.classList.add('lit');
-      }
-    } else {
-      w.classList.remove('lit', 'lit-yellow');
-    }
-  }, 200);
-}
 
 /* ─── SCROLL REVEAL ─────────────────────────────────────── */
 const revealObserver = new IntersectionObserver((entries) => {
@@ -216,84 +183,66 @@ const counterObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.stat-num').forEach(el => counterObserver.observe(el));
 
-/* ─── CALCULATOR ─────────────────────────────────────────── */
-const calcInputs = ['m2', 'consumo', 'tarifa'];
+/* ─── CALCULATOR (EC-VENT SAVINGS) ──────────────────────── */
+/*
+ * Model from brand guidelines:
+ * Typical saving = 55% of HVAC fan energy consumption.
+ * kWh_saved = potencia_kw × horas × dias × 0.55
+ * Result: annual savings in MXN, kWh saved, CO2 avoided.
+ */
+const SAVING_PCT = 0.55;
+const CO2_KG_PER_KWH = 0.454; // Mexico grid factor
 
-calcInputs.forEach(id => {
+const calcRanges = [
+  { id: 'potenciaKw', fmt: v => Math.round(v) },
+  { id: 'horasOp',   fmt: v => Math.round(v) },
+  { id: 'diasOp',    fmt: v => Math.round(v) },
+  { id: 'tarifaKwh', fmt: v => v.toFixed(2) },
+];
+
+calcRanges.forEach(({ id, fmt }) => {
   const input = document.getElementById(id);
   const display = document.getElementById(id + 'Val');
   if (!input || !display) return;
   input.addEventListener('input', () => {
-    const val = parseFloat(input.value);
-    if (id === 'tarifa') display.textContent = val.toFixed(2);
-    else display.textContent = val.toLocaleString();
+    display.textContent = fmt(parseFloat(input.value));
     runCalculator();
   });
 });
 
-document.querySelectorAll('input[name="hvacAge"], input[name="lighting"], input[name="bms"]')
-  .forEach(r => r.addEventListener('change', runCalculator));
-
-document.getElementById('calcBtn').addEventListener('click', () => {
-  runCalculator(true);
-});
+const calcBtn = document.getElementById('calcBtn');
+if (calcBtn) calcBtn.addEventListener('click', () => runCalculator(true));
 
 function runCalculator(animate = false) {
-  const consumo = parseFloat(document.getElementById('consumo').value) || 50000;
-  const tarifa = parseFloat(document.getElementById('tarifa').value) || 2.5;
+  const potencia = parseFloat(document.getElementById('potenciaKw').value) || 75;
+  const horas    = parseFloat(document.getElementById('horasOp').value) || 16;
+  const dias     = parseFloat(document.getElementById('diasOp').value) || 350;
+  const tarifa   = parseFloat(document.getElementById('tarifaKwh').value) || 2.8;
 
-  const hvacSaving = parseFloat(document.querySelector('input[name="hvacAge"]:checked')?.value || 0.25);
-  const lightSaving = parseFloat(document.querySelector('input[name="lighting"]:checked')?.value || 0.35);
-  const bmsSaving = parseFloat(document.querySelector('input[name="bms"]:checked')?.value || 0.08);
+  const kwh_saved_annual  = Math.round(potencia * horas * dias * SAVING_PCT);
+  const saved_anual_mxn   = Math.round(kwh_saved_annual * tarifa);
+  const co2_tons_annual   = Math.round(kwh_saved_annual * CO2_KG_PER_KWH / 1000 * 10) / 10;
+  const after_pct         = Math.round((1 - SAVING_PCT) * 100);
 
-  const totalPctRaw = (hvacSaving + lightSaving + bmsSaving);
-  const totalPct = Math.min(totalPctRaw, 0.65);
-  const savedKwh = Math.round(consumo * totalPct);
-  const savedMes = Math.round(savedKwh * tarifa);
-  const savedAnual = savedMes * 12;
-  const co2 = Math.round(savedKwh * 12 * 0.000454);
-  const inversEst = savedAnual * 3.2;
-  const roi = (inversEst / savedAnual).toFixed(1);
+  document.getElementById('resAnual').textContent = saved_anual_mxn.toLocaleString();
+  document.getElementById('resKwh').textContent   = kwh_saved_annual.toLocaleString();
+  document.getElementById('resCo2').textContent   = co2_tons_annual.toFixed(1);
+  document.getElementById('resPct').textContent   = Math.round(SAVING_PCT * 100);
 
-  document.getElementById('resKwh').textContent = savedKwh.toLocaleString();
-  document.getElementById('resMes').textContent = savedMes.toLocaleString();
-  document.getElementById('resAnual').textContent = savedAnual.toLocaleString();
-  document.getElementById('resPct').textContent = Math.round(totalPct * 100);
-  document.getElementById('resRoi').textContent = roi;
-  document.getElementById('resCo2').textContent = co2.toLocaleString();
-
-  const hvacPct = Math.round((hvacSaving / totalPctRaw) * 100);
-  const ledPct = Math.round((lightSaving / totalPctRaw) * 100);
-  const bmsPct = Math.round((bmsSaving / totalPctRaw) * 100);
-
-  const chartBars = document.getElementById('chartBars');
-  chartBars.innerHTML = `
-    ${chartBar('HVAC', hvacPct, animate)}
-    ${chartBar('Iluminación LED', ledPct, animate)}
-    ${chartBar('Automatización BMS', bmsPct, animate)}
-  `;
-
-  if (animate) {
-    setTimeout(() => {
-      chartBars.querySelectorAll('.chart-bar-fill').forEach(b => {
-        b.style.width = b.dataset.pct + '%';
-      });
-    }, 50);
-  } else {
-    chartBars.querySelectorAll('.chart-bar-fill').forEach(b => {
-      b.style.width = b.dataset.pct + '%';
-    });
+  const afterBar = document.getElementById('consAfterBar');
+  if (afterBar) {
+    if (animate) {
+      afterBar.style.width = '0%';
+      afterBar.textContent = '';
+      setTimeout(() => {
+        afterBar.style.width = after_pct + '%';
+        afterBar.textContent = after_pct + '%';
+      }, 80);
+    } else {
+      afterBar.style.width = after_pct + '%';
+      afterBar.textContent = after_pct + '%';
+    }
   }
-}
-
-function chartBar(label, pct, animate) {
-  return `<div class="chart-item">
-    <div class="chart-label">${label}</div>
-    <div class="chart-bar-bg">
-      <div class="chart-bar-fill" data-pct="${pct}" style="width:${animate ? 0 : pct}%"></div>
-    </div>
-    <div class="chart-pct">${pct}%</div>
-  </div>`;
 }
 
 runCalculator();
@@ -336,7 +285,6 @@ if (total > 0) {
   document.getElementById('nextBtn').addEventListener('click', () => goTo((current + 1) % total));
 
   let autoSlide = setInterval(() => goTo((current + 1) % total), 5000);
-
   track.addEventListener('mouseenter', () => clearInterval(autoSlide));
   track.addEventListener('mouseleave', () => {
     autoSlide = setInterval(() => goTo((current + 1) % total), 5000);
@@ -366,10 +314,10 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
   btn.disabled = true;
   setTimeout(() => {
-    btn.innerHTML = '<i class="fas fa-check"></i> ¡Enviado!';
+    btn.innerHTML = '<i class="fas fa-check"></i> Solicitud Enviada';
     document.getElementById('formSuccess').classList.add('visible');
     setTimeout(() => {
-      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Solicitud de Diagnóstico Gratuito';
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Solicitar Evaluación Gratuita';
       btn.disabled = false;
     }, 3000);
   }, 1500);
@@ -391,30 +339,34 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 window.addEventListener('scroll', () => {
   const scrolled = window.scrollY;
   document.querySelectorAll('.orb').forEach((orb, i) => {
-    const speed = 0.1 + i * 0.05;
+    const speed = 0.08 + i * 0.04;
     orb.style.transform = `translateY(${scrolled * speed}px)`;
   });
 });
 
-/* ─── CARD TILT EFFECT ───────────────────────────────────── */
-document.querySelectorAll('.what-card, .result-card, .sector-card').forEach(card => {
+/* ─── CARD TILT ─────────────────────────────────────────── */
+document.querySelectorAll('.tech-card, .project-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const rect = card.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    card.style.transform = `perspective(600px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateY(-4px)`;
+    card.style.transform = `perspective(600px) rotateX(${-y*5}deg) rotateY(${x*5}deg) translateY(-4px)`;
   });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
-  });
+  card.addEventListener('mouseleave', () => { card.style.transform = ''; });
 });
 
-/* ─── TYPEWRITER HERO (extra effect) ───────────────────────── */
+/* ─── TYPEWRITER HERO ───────────────────────────────────── */
 const line2 = document.querySelector('.hero-title .line-2');
 if (line2) {
-  const texts = ['Multiplica tus Ahorros.', 'Reduce tu Huella de CO₂.', 'Certifica tu Edificio LEED.', 'Potencia tu Inversión.'];
+  const texts = [
+    'en Movimiento',
+    'sin Demolición',
+    'Plug & Play',
+    'con Redundancia N+1',
+    'desde el Día Uno',
+  ];
   let textIdx = 0, charIdx = 0, isDeleting = false;
-  const originalText = texts[0];
+  line2.textContent = texts[0];
 
   function typeWriter() {
     const full = texts[textIdx];
@@ -425,36 +377,30 @@ if (line2) {
       line2.textContent = full.substring(0, charIdx + 1);
       charIdx++;
     }
-    let delay = isDeleting ? 50 : 90;
-    if (!isDeleting && charIdx === full.length) { delay = 2500; isDeleting = true; }
-    if (isDeleting && charIdx === 0) { isDeleting = false; textIdx = (textIdx + 1) % texts.length; delay = 300; }
+    let delay = isDeleting ? 45 : 85;
+    if (!isDeleting && charIdx === full.length) { delay = 2800; isDeleting = true; }
+    if (isDeleting && charIdx === 0) {
+      isDeleting = false;
+      textIdx = (textIdx + 1) % texts.length;
+      delay = 300;
+    }
     setTimeout(typeWriter, delay);
   }
-  setTimeout(typeWriter, 3000);
+  setTimeout(typeWriter, 3500);
 }
 
-/* ─── STATS COUNTER ON SCROLL ───────────────────────────── */
-const resultCounterObserver = new IntersectionObserver((entries) => {
+/* ─── HERO STATS COUNTER ────────────────────────────────── */
+const heroStatObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.querySelectorAll('[data-target]').forEach(el => animateCounter(el));
-      resultCounterObserver.unobserve(entry.target);
+      heroStatObserver.unobserve(entry.target);
     }
   });
 }, { threshold: 0.3 });
 
 const heroStats = document.querySelector('.hero-stats');
-if (heroStats) resultCounterObserver.observe(heroStats);
+if (heroStats) heroStatObserver.observe(heroStats);
 
-/* ─── GLOWING BORDER ON HOVER (service cards) ──────────── */
-document.querySelectorAll('.service-card').forEach(card => {
-  card.addEventListener('mouseenter', () => {
-    card.querySelector('.service-front').style.borderColor = 'rgba(0,245,160,0.2)';
-  });
-  card.addEventListener('mouseleave', () => {
-    card.querySelector('.service-front').style.borderColor = '';
-  });
-});
-
-console.log('%c⚡ RETROFIT.MX', 'color:#00f5a0;font-size:24px;font-weight:900;');
-console.log('%cLíderes en Eficiencia Energética en México', 'color:#00d9f5;font-size:14px;');
+console.log('%c⚡ RETROFIT.MX', 'color:#1E53D8;font-size:24px;font-weight:900;');
+console.log('%cEficiencia en Movimiento · Muros de Ventiladores EC para HVAC', 'color:#00C8F0;font-size:14px;');
